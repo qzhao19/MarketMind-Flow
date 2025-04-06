@@ -8,12 +8,12 @@ from threading import Lock
 # setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-DATABASE_PATH = "marketing_flow.db"
+DATABASE_PATH = "marketing.db"
 _CONNECTION_LOCK = Lock()  # lock for thread-safe connection management
 
 @contextmanager
 def get_db_connection(
-    *,
+    db_path: str = DATABASE_PATH,
     timeout: float = 5.0,
     detect_types: int = sqlite3.PARSE_DECLTYPES,
     isolation_level: Optional[str] = None ) -> Iterator[sqlite3.Connection]:
@@ -24,15 +24,15 @@ def get_db_connection(
     try:
         with _CONNECTION_LOCK:
             conn = sqlite3.connect(
-                DATABASE_PATH,
+                db_path,
                 timeout=timeout,
                 detect_types=detect_types,
                 isolation_level=isolation_level
             )
-            logging.info(f"Connected to SQLite database at {DATABASE_PATH}")
+            logging.info(f"Connected to SQLite database at {db_path}")
             # Enable foreign keys and WAL mode
             conn.row_factory = sqlite3.Row
-            conn.execute("PRAGMA foreign_keys = ON")
+            conn.execute("PRAGMA foreign_keys = ON") # make sure foreign keys are enabled
             conn.execute("PRAGMA journal_mode = WAL") 
             conn.execute("PRAGMA busy_timeout = 5000")  # 5 seconds timeout
             
@@ -42,7 +42,7 @@ def get_db_connection(
 
     except sqlite3.Error as error:
         logging.error(
-            f"Database connection failed (path={DATABASE_PATH}): {str(error)}",
+            f"Database connection failed (path={db_path}): {str(error)}",
             exc_info=True
         )
         raise sqlite3.DatabaseError(f"Connection failed: {error}") from error
@@ -68,7 +68,7 @@ def initialize_database():
                 CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     job_id TEXT,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    timestamp DATETIME,
                     data TEXT,
                     FOREIGN KEY (job_id) REFERENCES jobs(job_id)
                 )
