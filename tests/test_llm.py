@@ -5,7 +5,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.core.llm.models import LLMConfig, create_llm_client
+from src.core.llm.llm_config import LLMConfig, create_llm_client
 
 class TestLLMConfig:
     """Test cases for LLMConfig class"""
