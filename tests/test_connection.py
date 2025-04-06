@@ -32,7 +32,7 @@ def test_connection_success():
         assert cursor.fetchone()[0].upper() == "WAL"
 
 def test_concurrent_connections():
-    """测试多线程并发连接"""
+    """Testing multi-threaded concurrent connections"""
     results = []
     
     def worker():
@@ -50,9 +50,9 @@ def test_concurrent_connections():
     for t in threads:
         t.join()
     
-    assert all(results), "所有线程应成功完成操作"
+    assert all(results), "All threads should complete successfully"
     
-    # 验证数据完整性
+    # check database
     with get_db_connection() as conn:
         cursor = conn.execute("SELECT COUNT(*) FROM test")
         assert cursor.fetchone()[0] == 5
