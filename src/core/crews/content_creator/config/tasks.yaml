@@ -1,0 +1,32 @@
+project_research_task:
+  description: >
+     Comprehensively analyze {project_description}'s market environment, user profile, and success metrics through quantitative and qualitative methods.
+     Ensure thorough coverage of naming, strategies, promotion channels, and KPIs.
+  expected_output: >
+    A comprehensive summary containing project details and target audience profile.
+  agent: chief_marketing_strategist
+
+marketing_strategy_task:
+  description: >
+    Develop a comprehensive marketing strategy based on the client's {customer_domain} and {project_description}. 
+    Synthesize insights from both research tasks and the project understanding task to construct a high-quality strategic plan.
+  expected_output: >
+    A detailed marketing strategy document including objectives, target audience, key messages, 
+    and recommended tactics, ensuring coverage of naming, strategies, promotion channels, and KPIs.
+  agent: chief_marketing_strategist
+
+campaign_development_task:
+  description: >
+    Brainstorm innovative marketing campaign concepts for {project_description}. 
+    Ensure ideas are unique, compelling, and aligned with the overall marketing strategy.
+  expected_output: >
+    Five campaign proposals, each with a brief description and expected outcomes.
+  agent: creative_director
+
+content_production_task:
+  description: >
+    Create marketing copy for approved campaign concepts of {project_description}. 
+    Ensure content is engaging, clear, and tailored to the target audience.
+  expected_output: >
+    Marketing copy for each campaign concept.
+  agent: creative_director
