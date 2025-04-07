@@ -1,0 +1,6 @@
+research_task:
+    description: >
+      Deeply analyze the client's products and major competitors around their {customer_domain} offerings, uncovering key trends and relevant insights to ensure any valuable information is collected. The current collaborative project is outlined below: {project_description}.
+    expected_output: >
+      Comprehensive report on the client, its products and competitors, including key metrics, market preferences, positioning strategy and audience engagement analysis.
+    agent: lead_market_analyst
