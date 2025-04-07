@@ -4,7 +4,7 @@ from pathlib import Path
 from unittest.mock import patch, MagicMock
 import pytest
 
-sys.path.append(str(Path(__file__).parent.parent))
+# sys.path.append(str(Path(__file__).parent.parent))
 from src.core.llm.llm_config import LLMConfig, create_llm_client
 
 class TestLLMConfig:
@@ -31,7 +31,7 @@ class TestLLMConfig:
         with pytest.raises(ValueError):
             LLMConfig(temperature=temperature)
 
-LLM_CLASS_PATH = "src.core.llm.models.LLM"  # Update this to actual import path
+LLM_CLASS_PATH = "src.core.llm.llm_config.LLM"  # Update this to actual import path
 
 class TestCreateLLMClient:
     """Test cases for create_llm_client function"""
