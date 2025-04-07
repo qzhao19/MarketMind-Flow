@@ -4,11 +4,11 @@ import sqlite3
 from contextlib import contextmanager
 from typing import Iterator, Optional
 from threading import Lock
+from src.config.settings import DATABASE_PATH
 
 # setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-DATABASE_PATH = "marketing.db"
 _CONNECTION_LOCK = Lock()  # lock for thread-safe connection management
 
 @contextmanager

@@ -10,7 +10,7 @@ from .connection import get_db_connection
 _logger = logging.getLogger(__name__)
 _op_lock = Lock()
 
-def record_event(job_id: str, event_data: str):
+def append_event(job_id: str, event_data: str):
     """record event"""
     try:
         with _op_lock, get_db_connection() as conn:
@@ -150,6 +150,4 @@ def get_job_by_id(job_id: str) -> Job:
     except Exception as e:
         logging.error(f"Unexpected error: {str(e)}", exc_info=True)
         return None
-
-
 
