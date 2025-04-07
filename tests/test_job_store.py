@@ -9,7 +9,7 @@ from datetime import datetime
 from typing import List
 from src.core.job_management.job_schemas import Job, Event
 from src.services.database.connection import get_db_connection, initialize_database
-from src.services.database.job_store import record_event, update_job_by_id, get_job_by_id
+from src.services.database.job_store import append_event, update_job_by_id, get_job_by_id
 
 
 class TestJobFunctions(unittest.TestCase):
@@ -49,10 +49,10 @@ class TestJobFunctions(unittest.TestCase):
             conn.execute("DELETE FROM jobs")   # Parent table last
             conn.commit()
 
-    def test_record_event_new_job(self):
+    def test_append_event_new_job(self):
         """recording new job event"""
         # execute test
-        record_event("test_job_1", "test_event_data")
+        append_event("test_job_1", "test_event_data")
         
         # check jobs table
         with get_db_connection() as conn:
@@ -132,6 +132,4 @@ class TestJobFunctions(unittest.TestCase):
         self.assertEqual(len(job.events), 1)
         # print(job.events[0].data)
         self.assertEqual(job.events[0].data, "initial_event")
-
-
 

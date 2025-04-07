@@ -3,7 +3,9 @@ import sqlite3
 import os
 from threading import Thread
 from unittest.mock import patch, MagicMock
-from src.services.database.connection import get_db_connection, initialize_database, DATABASE_PATH
+
+from src.config.settings import DATABASE_PATH
+from src.services.database.connection import get_db_connection, initialize_database
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_teardown():
