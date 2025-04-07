@@ -3,11 +3,7 @@ from typing import Optional, Type
 from pydantic_settings import BaseSettings
 from pydantic import Field, field_validator
 from functools import lru_cache
-
-# Default configuration values
-BASE_URL = "http://localhost:11434/v1"
-API_KEY = "ollama"
-MODEL = "qwen2.5:0.5b"
+from src.config.settings import BASE_URL, API_KEY, MODEL 
 
 # Configuration class for LLM
 class LLMConfig(BaseSettings):
