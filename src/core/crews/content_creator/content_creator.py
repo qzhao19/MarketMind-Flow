@@ -88,7 +88,7 @@ class ContentCreatorCrew():
 
         append_event(self.job_id, "ContentCreatorCrew execution started")
         try:
-            results = self.crew().execute(inputs = self.input_data)
+            results = self.crew().kickoff(inputs = self.input_data)
             append_event(self.job_id, "ContentCreatorCrew execution completed")
             return results
         except Exception as e:
