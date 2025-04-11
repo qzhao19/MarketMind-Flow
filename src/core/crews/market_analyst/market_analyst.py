@@ -45,15 +45,16 @@ class MarketAnalystCrew():
     def execute(self):
         if not self.crew():
             append_event(self.job_id, "MarketAnalystCrew not set up")
-            return "MarketAnalystCrew not set up"
+            return {"status": "error", "message": "MarketAnalystCrew not set up"}
         
         append_event(self.job_id, "MarketAnalystCrew's Task Started")
         try:
-            results = self.crew().execute(inputs=self.input_data)
+            results = self.crew().kickoff(inputs=self.input_data)
             append_event(self.job_id, "MarketAnalystCrew's Task Complete")
 
             return results
         except Exception as e:
             append_event(self.job_id, f"An error occurred: {e}")
-            return str(e)
+            return {"status": "error", "message": str(e)}
+        
 
