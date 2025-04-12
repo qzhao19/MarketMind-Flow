@@ -3,7 +3,7 @@ from typing import Optional, Type
 from pydantic_settings import BaseSettings
 from pydantic import Field, field_validator
 from functools import lru_cache
-from src.config.settings import BASE_URL, API_KEY, MODEL 
+from src.config.settings import LLM_BASE_URL, LLM_API_KEY, LLM_MODEL 
 
 # Configuration class for LLM
 class LLMConfig(BaseSettings):
@@ -17,17 +17,17 @@ class LLMConfig(BaseSettings):
     - Cached configuration instances
     """
     base_url: str = Field(
-        default=BASE_URL,
+        default=LLM_BASE_URL,
         description="Base API endpoint URL",
         env="LLM_BASE_URL"
     )
     api_key: str = Field(
-        default=API_KEY, 
+        default=LLM_API_KEY, 
         description="API key for authentication",
         env="LLM_API_KEY"
     )
     model: str = Field(
-        default=MODEL,
+        default=LLM_MODEL,
         description="Model name and version",
         env="LLM_MODEL"
     )
