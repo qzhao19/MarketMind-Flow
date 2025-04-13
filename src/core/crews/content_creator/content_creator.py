@@ -1,8 +1,8 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
-from src.core.llm.models import MarketStrategy, CampaignDevelopment, ContentProduction
-from src.services.database.job_store import append_event
+from src.services.llm.models import MarketStrategy, CampaignDevelopment, ContentProduction
+from src.services.database.job_store import append_event_by_id
 
 @CrewBase
 class ContentCreatorCrew():
@@ -15,7 +15,7 @@ class ContentCreatorCrew():
         self.input_data = input_data
 
     def append_event_callback(self, task_output):
-        append_event(self.job_id, task_output.raw)
+        append_event_by_id(self.job_id, task_output.raw)
 
     @agent
     def chief_marketing_strategist(self) -> Agent:
@@ -81,16 +81,16 @@ class ContentCreatorCrew():
             verbose=True
         )
 
-    def execute(self):
+    def kickoff(self):
         if not self.crew():
-            append_event(self.job_id, "ContentCreatorCrew initialization failed")
-            return {"status": "error", "message": "ContentCreatorCrew not initialized"}
+            append_event_by_id(self.job_id, "ContentCreatorCrew initialization failed")
+            return"Error: ContentCreatorCrew not initialized"
 
-        append_event(self.job_id, "ContentCreatorCrew execution started")
+        append_event_by_id(self.job_id, "ContentCreatorCrew execution started")
         try:
             results = self.crew().kickoff(inputs = self.input_data)
-            append_event(self.job_id, "ContentCreatorCrew execution completed")
+            append_event_by_id(self.job_id, "ContentCreatorCrew execution completed")
             return results
         except Exception as e:
-            append_event(self.job_id, f"ContentCreatorCrew execution error: {str(e)}")
-            return {"status": "error", "message": str(e)}
+            append_event_by_id(self.job_id, f"ContentCreatorCrew execution error: {str(e)}")
+            return "Error: {}".format(str(e))
