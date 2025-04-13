@@ -4,13 +4,13 @@ import sqlite3
 from datetime import datetime
 from typing import List
 from threading import Lock
-from src.core.job_management.job_schemas import Event, Job
+from .job_schemas import Event, Job
 from .connection import get_db_connection
 
 _logger = logging.getLogger(__name__)
 _op_lock = Lock()
 
-def append_event(job_id: str, event_data: str):
+def append_event_by_id(job_id: str, event_data: str):
     """record event"""
     try:
         with _op_lock, get_db_connection() as conn:
