@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from pydantic import ValidationError
-from src.core.llm.models import BaseDescriptionModel, MarketStrategy, CampaignDevelopment, ContentProduction
+from src.services.llm.models import BaseDescriptionModel, MarketStrategy, CampaignDevelopment, ContentProduction
 
 class TestMarketingModels(unittest.TestCase):
     # BaseDescriptionModel Tests

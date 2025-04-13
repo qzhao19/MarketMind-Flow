@@ -7,9 +7,9 @@ import os
 from contextlib import contextmanager
 from datetime import datetime
 from typing import List
-from src.core.job_management.job_schemas import Job, Event
+from src.services.database.job_schemas import Job, Event
 from src.services.database.connection import get_db_connection, initialize_database
-from src.services.database.job_store import append_event, update_job_by_id, get_job_by_id
+from src.services.database.job_store import append_event_by_id, update_job_by_id, get_job_by_id
 
 
 class TestJobFunctions(unittest.TestCase):
@@ -52,7 +52,7 @@ class TestJobFunctions(unittest.TestCase):
     def test_append_event_new_job(self):
         """recording new job event"""
         # execute test
-        append_event("test_job_1", "test_event_data")
+        append_event_by_id("test_job_1", "test_event_data")
         
         # check jobs table
         with get_db_connection() as conn:
