@@ -6,7 +6,6 @@ from src.core.crews.market_analyst.market_analyst import MarketAnalystCrew
 
 class Workflow(Flow):
     """market analysis pipeline."""
-    
     def __init__(self, job_id: str, llm: LLM, input_data):
         super().__init__()
         self.job_id = job_id
@@ -20,14 +19,14 @@ class Workflow(Flow):
             job_id=self.job_id,
             llm=self.llm,
             input_data=self.input_data
-        ).execute()
+        ).kickoff()
 
     @listen(analyze_market_crew)
-    def content_creator_crew(self):
-        """Execute market analysis phase"""
+    def create_content_crew(self):
+        """Execute market analysis phase after market analysis phase is completed"""
         return ContentCreatorCrew(
             job_id=self.job_id,
             llm=self.llm,
             input_data=self.input_data
-        ).execute()
+        ).kickoff()
 
