@@ -3,7 +3,7 @@ from typing import Optional, Type
 from pydantic_settings import BaseSettings
 from pydantic import Field, field_validator
 from functools import lru_cache
-from src.config.settings import LLM_BASE_URL, LLM_API_KEY, LLM_MODEL 
+from src.config.settings import LLM_BASE_URL, LLM_API_KEY, LLM_MODEL, LLM_PROVIDER
 
 # Configuration class for LLM
 class LLMConfig(BaseSettings):
@@ -31,6 +31,11 @@ class LLMConfig(BaseSettings):
         description="Model name and version",
         env="LLM_MODEL"
     )
+    provider: str = Field(
+        default=LLM_PROVIDER,
+        description="LLM provider name",
+        env="LLM_PROVIDER"
+    )
     temperature: float = Field(
         default=0.5,
         ge=0,
@@ -53,44 +58,19 @@ class LLMConfig(BaseSettings):
         """Ensure API base URL follows expected format"""
         if not v.startswith(('http://', 'https://')):
             raise ValueError("Invalid protocol, must start with http:// or https://")
-        if not v.endswith('/v1'):
-            raise ValueError("API path must end with /v1")
+        if v.endswith('/'):
+            raise ValueError("Base URL should not end with a slash")
         return v.rstrip('/')  # Normalize URL
+    
+    @field_validator('model')
+    def validate_model(cls, v: str) -> str:
+        """make sure the model not contain prefix 'provider'"""
+        if '/' in v:
+            raise ValueError("Model name should not include provider prefix")
+        return v
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
         extra = "forbid"  # Disallow undefined fields
 
-@lru_cache(maxsize=None)
-def get_llm_config() -> LLMConfig:
-    """Get singleton configuration instance with LRU caching"""
-    return LLMConfig()
-
-def create_llm_client(config: Optional[LLMConfig] = None) -> LLM:
-    """
-    Factory function for creating LLM client instances.
-    
-    Args:
-        config: Custom configuration (uses cached default if None)
-    
-    Returns:
-        Fully configured LLM client instance
-    
-    Example:
-        >>> # Basic usage
-        >>> llm = create_llm_client()
-        >>>
-        >>> # Custom configuration
-        >>> custom_config = LLMConfig(model="qwen2.5:1b")
-        >>> llm = create_llm_client(config=custom_config)
-    """
-    final_config = config or get_llm_config()
-    return LLM(
-        model=final_config.model,
-        base_url=final_config.base_url,
-        api_key=final_config.api_key,
-        temperature=final_config.temperature,
-        max_tokens=final_config.max_tokens,
-        timeout=final_config.timeout,
-    )
