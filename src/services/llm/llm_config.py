@@ -69,8 +69,3 @@ class LLMConfig(BaseSettings):
             raise ValueError("Model name should not include provider prefix")
         return v
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra = "forbid"  # Disallow undefined fields
-

@@ -1,3 +1,5 @@
+import json
+
 from crewai import LLM
 from typing import Optional
 from pydantic import TypeAdapter
