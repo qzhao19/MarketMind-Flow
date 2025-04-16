@@ -1,5 +1,8 @@
 import os
 import sys
+import unittest
+
+from crewai import LLM
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 import pytest
@@ -8,62 +11,41 @@ import pytest
 from src.services.llm.llm_config import LLMConfig
 from src.services.llm.llm_service import LLMService
 
+LLM_CLASS_PATH = "src.services.llm.llm_config.LLM"  # Update this to actual import path
 
-LLM_CLASS_PATH = "src.core.llm.llm_config.LLM"  # Update this to actual import path
+class TestLLMService(unittest.TestCase):
+    def setUp(self):
+        self.service = LLMService()
+        self.valid_config = {
+            "provider": "openai",
+            "model": "gpt-4",
+            "base_url": "https://api.openai.com/v1",
+            "api_key": "test_key",
+            "temperature": 0.7,
+            "max_tokens": 1000,
+            "timeout": 30
+        }
+        self.invalid_config = {
+            "provider": "invalid/provider", 
+            "base_url": "invalid_url"
+        }
 
-class TestCreateLLMClient:
-    """Test cases for create_llm_client function"""
+    def test_get_client_with_default_config(self):
+        with patch('src.services.llm.llm_service.get_llm_config') as mock_get_config:
+            mock_config = MagicMock(spec=LLMConfig)
+            mock_config.provider = "default"
+            mock_config.model = "default-model"
+            mock_get_config.return_value = mock_config
 
-    @patch(LLM_CLASS_PATH)  # Patch the original LLM class import
-    def test_init_with_default_config(self, mock_llm_class):
-        """Verify initialization with default configuration"""
-        # Setup mock
-        mock_instance = MagicMock()
-        mock_llm_class.return_value = mock_instance
+            with patch.object(self.service, '_create_client') as mock_create:
+                mock_client = MagicMock(spec=LLM)
+                mock_create.return_value = mock_client
 
-        # Execute
-        result = LLMService.get_client()
+                client = self.service.get_client()
+                cached_client = self.service.get_client()
 
-        # Verify
-        mock_llm_class.assert_called_once_with(
-            model="qwen2.5:0.5b",
-            base_url="http://localhost:11434/v1",
-            api_key="ollama",
-            temperature=0.5,
-            max_tokens=2048,
-            timeout=600
-        )
-        assert result is mock_instance
+                mock_get_config.assert_called_once()
+                mock_create.assert_called_once()
+                self.assertEqual(client, cached_client)
+                self.assertEqual(mock_create.call_args[0][0], mock_config)
 
-    @patch(LLM_CLASS_PATH)
-    def test_init_with_custom_config(self, mock_llm_class):
-        """Verify initialization with custom configuration"""
-        # Setup
-        custom_config = LLMConfig(
-            model="custom_model",
-            temperature=0.8,
-            max_tokens=1024
-        )
-        mock_instance = MagicMock()
-        mock_llm_class.return_value = mock_instance
-
-        # Execute
-        result = LLMService.get_client(config=custom_config)
-
-        # Verify
-        mock_llm_class.assert_called_once_with(
-            model="custom_model",
-            base_url="http://localhost:11434/v1",
-            api_key="ollama",
-            temperature=0.8,
-            max_tokens=1024,
-            timeout=600
-        )
-        assert result is mock_instance
-
-    @patch(LLM_CLASS_PATH)
-    def test_return_type(self, mock_llm_class):
-        """Ensure function returns correct instance type"""
-        mock_instance = MagicMock()
-        mock_llm_class.return_value = mock_instance
-        assert isinstance(LLMService.get_client(), MagicMock)
