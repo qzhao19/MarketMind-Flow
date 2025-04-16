@@ -7,12 +7,11 @@ from src.services.database.job_store import append_event_by_id, update_job_by_id
 def kickoff_flow(job_id, input_data):
     print(f"MarketFlow job {job_id} is starting")
     results = None
-    llm = LLMService.get_client()
+    llm_service = LLMService()
     try:
         append_event_by_id(job_id, "Flow Started")
-        results = Workflow(job_id, llm, input_data).kickoff()
+        results = Workflow(job_id, llm_service.get_client(), input_data).kickoff()
         update_job_by_id(job_id, "COMPLETE", str(results), ["Flow complete"])
-        return results
     except Exception as e:
         print(f"Error in kickoff_flow for job {job_id}: {e}")
         append_event_by_id(job_id, f"An error occurred: {e}")
