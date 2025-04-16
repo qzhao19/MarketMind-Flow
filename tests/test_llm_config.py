@@ -12,9 +12,10 @@ class TestLLMConfig:
     def test_default_values(self):
         """Test that default values are correctly set"""
         config = LLMConfig()
-        assert config.base_url == "http://localhost:11434/v1"
+        assert config.base_url == "http://localhost:11434"
         assert config.api_key == "ollama"
         assert config.model == "qwen2.5:0.5b"
+        assert config.provider == "ollama"
         assert config.temperature == 0.5
         assert config.max_tokens == 2048
         assert config.timeout == 600
@@ -22,7 +23,8 @@ class TestLLMConfig:
     @patch.dict(os.environ, {
         "LLM_BASE_URL": "http://test:8000",
         "LLM_API_KEY": "test_key",
-        "LLM_MODEL": "test_model"
+        "LLM_MODEL": "test_model",
+        "LLM_PROVIDER": "test_provider"
     })
 
     @pytest.mark.parametrize("temperature", [-0.1, 1.1])
