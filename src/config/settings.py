@@ -12,7 +12,7 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # LLM default configs
-LLM_BASE_URL = "http://localhost:11434/"
+LLM_BASE_URL = "http://localhost:11434"
 LLM_API_KEY = "ollama"
 LLM_MODEL = "qwen2.5:0.5b"
 LLM_PROVIDER="ollama"
