@@ -2,6 +2,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import flow_router
+
+from src.config.logging import setup_logging
 from src.services.database.connection import initialize_database
 
 @asynccontextmanager
@@ -31,5 +33,6 @@ def create_app() -> FastAPI:
     
     return app
 
+setup_logging()
 # export FastAPI instance
 app = create_app()
