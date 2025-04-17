@@ -1,8 +1,11 @@
+import logging
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 from src.services.llm.models import MarketStrategy, CampaignDevelopment, ContentProduction
 from src.services.database.job_store import append_event_by_id
+
+logger = logging.getLogger(__name__)
 
 @CrewBase
 class ContentCreatorCrew():
@@ -84,7 +87,8 @@ class ContentCreatorCrew():
     def kickoff(self):
         if not self.crew():
             append_event_by_id(self.job_id, "ContentCreatorCrew initialization failed")
-            return"Error: ContentCreatorCrew not initialized"
+            logger.error(f"Error: ContentCreatorCrew not initialized")
+            return "Error: ContentCreatorCrew not initialized"
 
         append_event_by_id(self.job_id, "ContentCreatorCrew execution started")
         try:
@@ -93,4 +97,5 @@ class ContentCreatorCrew():
             return results
         except Exception as e:
             append_event_by_id(self.job_id, f"ContentCreatorCrew execution error: {str(e)}")
+            logger.error(f"ContentCreatorCrew execution error: {str(e)}")
             return "Error: {}".format(str(e))
