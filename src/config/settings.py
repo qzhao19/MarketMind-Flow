@@ -21,8 +21,8 @@ LLM_PROVIDER="ollama"
 os.environ["SERPER_API_KEY"]  = "32b2b6c476b1fd71cf2a754a788ff4078a06745f0a3f9758bfc032584f059336"
 
 # sqlite path
-DATABASE_PATH = "market-flow.db"
+DATABASE_PATH = "marketflow.db"
 
 # logging config
-LOG_DIR = os.getenv("LOG_DIR", str(Path(__file__).parent.parent / "logs"))
+LOG_DIR = os.getenv("LOG_DIR", str(Path(__file__).parent.parent.parent / "logs"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
