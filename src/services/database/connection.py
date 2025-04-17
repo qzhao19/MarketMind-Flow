@@ -6,8 +6,7 @@ from typing import Iterator, Optional
 from threading import Lock
 from src.config.settings import DATABASE_PATH
 
-# setup logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 _CONNECTION_LOCK = Lock()  # lock for thread-safe connection management
 
@@ -29,7 +28,7 @@ def get_db_connection(
                 detect_types=detect_types,
                 isolation_level=isolation_level
             )
-            logging.info(f"Connected to SQLite database at {db_path}")
+            logger.info(f"Connected to SQLite database at {db_path}")
             # Enable foreign keys and WAL mode
             conn.row_factory = sqlite3.Row
             conn.execute("PRAGMA foreign_keys = ON") # make sure foreign keys are enabled
@@ -41,7 +40,7 @@ def get_db_connection(
         yield conn
 
     except sqlite3.Error as error:
-        logging.error(
+        logger.error(
             f"Database connection failed (path={db_path}): {str(error)}",
             exc_info=True
         )
@@ -51,7 +50,7 @@ def get_db_connection(
             try:
                 conn.close()
             except sqlite3.Error as e:
-                logging.warning(f"Connection close failed: {e}")
+                logger.warning(f"Connection close failed: {e}")
 
 def initialize_database():
     """intialize database tables"""
@@ -75,5 +74,5 @@ def initialize_database():
             ''')
             conn.commit()
         except sqlite3.Error as error:
-            logging.error(f"Error creating tables: {error}")
+            logger.error(f"Error creating tables: {error}")
             raise sqlite3.DatabaseError(f"Creating tables failed: {error}") from error
