@@ -1,7 +1,10 @@
+import logging
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 from src.services.database.job_store import append_event_by_id
+
+logger = logging.getLogger(__name__)
 
 @CrewBase
 class MarketAnalystCrew():
@@ -45,6 +48,7 @@ class MarketAnalystCrew():
     def kickoff(self):
         if not self.crew():
             append_event_by_id(self.job_id, "MarketAnalystCrew not set up")
+            logger.error(f"Error: MarketAnalystCrew not initialized")
             return "Error: MarketAnalystCrew not initialized"
         
         append_event_by_id(self.job_id, "MarketAnalystCrew's Task Started")
@@ -55,6 +59,7 @@ class MarketAnalystCrew():
             return results
         except Exception as e:
             append_event_by_id(self.job_id, f"An error occurred: {e}")
+            logger.error("Error: {}".format(str(e)))
             return "Error: {}".format(str(e))
         
 
