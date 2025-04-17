@@ -17,9 +17,9 @@ app.conf.update(
     # worker_prefetch_multiplier=1,
     imports=['src.tasks.market_tasks'],
     task_routes={
-        'execute_market_flow': {'queue': 'market_flow'},
+        'src.tasks.market_tasks.kickoff_flow': {'queue': 'market_flow'},
     }
 )
-
+# src/tasks/market_tasks.kickoff_flow
 # expose celery_app for import in other modules
 __all__ = ['app']
