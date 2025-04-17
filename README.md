@@ -94,9 +94,6 @@ pip install -r requirements.txt
 Download and install Apifox from [Apifox Official Website](https://apifox.com/)
 
 ### 4.4 Configure the Project
-You may need to set up environment variables and modify the configuration files in the config directory according to your needs. For example, you can set the database connection string in ``settings.py``.
-
-### 4.4 Configure the Project
 You may need to set up environment variables and modify the configuration files in the config directory according to your needs. For example, you can set the following configurations in ``settings.py``:
 
 1. **Ollama Model Configuration**:
