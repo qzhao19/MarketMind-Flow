@@ -5,10 +5,11 @@ AI-powered marketing strategy workflow
 `MarketMind-Flow` is a project that leverages artificial intelligence to drive marketing strategy workflows. It aims to assist marketers in formulating and executing marketing strategies more efficiently.
 
 ## 2. Features
-- **Intelligent Analysis**: Utilize AI to conduct in - depth analysis of market data and uncover potential business opportunities.
-- **Automated Processes**: Simplify marketing processes and improve work efficiency.
-- **Flexible Configuration**: Support various parameter configurations to adapt to different business scenarios.
-
+- **Intelligent Analysis**: Utilize `CrewAI` tools to conduct in-depth analysis of market data and uncover potential business opportunities.
+- **Automated Processes**: `FastAPI`-powered API service with `Celery-Redis` task queue for seamless marketing process automation.
+- **Flexible Configuration**: Customizable parameters and seamless `Ollama` model switching for diverse business needs
+- **Adaptive System**: `SQLite`-based job tracking and configuration management that supports multi-scenario customization.
+- **User-Friendly Interface**: `Apifox`-based frontend interface for easy interaction and management of marketing jobs.
 
 ## 3. System Structure
 `src` Directory: Main source code directory containing all core functionalities.
