@@ -129,27 +129,27 @@ To run the project, you can use the following command:
 
 3. Test with Apifox:
 
-- Create a new POST API in Apifox:
-    - Click "New Request" in Apifox
-    - Set the request method to POST
-    - Enter the URL: `http://127.0.0.1:8012/api/marketflow`
-    - In the "Body" tab, select "JSON" format
-    - Add the following JSON structure:
-    ```json
-    {
-        "customer_domain": "xxx",
-        "project_description": "xxx"
-    }
-    ```
-    - Click "Save" to store the API configuration
+    - Create a new POST API in Apifox:
+        - Click "New Request" in Apifox
+        - Set the request method to POST
+        - Enter the URL: `http://127.0.0.1:8012/api/marketflow`
+        - In the "Body" tab, select "JSON" format
+        - Add the following JSON structure:
+        ```json
+        {
+            "customer_domain": "xxx",
+            "project_description": "xxx"
+        }
+        ```
+        - Click "Save" to store the API configuration
 
-- Create a new GET API in Apifox:
-    - Click "New Request" in Apifox
-    - Set the request method to GET
-    - Enter the URL: `http://127.0.0.1:8012/api/marketflow/{job_id}`
-    - Click "Save" to store the API configuration
+    - Create a new GET API in Apifox:
+        - Click "New Request" in Apifox
+        - Set the request method to GET
+        - Enter the URL: `http://127.0.0.1:8012/api/marketflow/{job_id}`
+        - Click "Save" to store the API configuration
 
-- Send the POST request to create a job, and then send the GET request to query the job status.
+    - Send the POST request to create a job, and then send the GET request to query the job status.
 
 
 ## License

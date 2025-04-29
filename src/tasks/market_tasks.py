@@ -1,6 +1,6 @@
 import logging
 
-from src.config.logging import setup_logging
+from src.config.logger import setup_logging
 from src.core.flows.workflow import Workflow
 from src.services.llm.llm_service import LLMService
 from src.services.celery.celery_app import app

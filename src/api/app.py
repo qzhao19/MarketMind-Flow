@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import flow_router
 
-from src.config.logging import setup_logging
+from src.config.logger import setup_logging
 from src.services.database.connection import initialize_database
 
 @asynccontextmanager
